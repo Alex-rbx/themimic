@@ -2,6 +2,8 @@ export type Developer = {
   name: string;
   role: string;
   robloxUserId: number;
+  /** Optional custom picture; when empty the Roblox avatar is used. */
+  avatarUrl: string;
   bio: string;
   worksOn: string[];
   since: string;
@@ -18,6 +20,7 @@ export const DEVELOPERS: Developer[] = [
     name: "Vesper",
     role: "Director · Lead designer",
     robloxUserId: 156,
+    avatarUrl: "",
     bio: "Wrote the first draft of THE MIMIC on a napkin at 3am. Decides how long the lights stay off.",
     worksOn: ["Game design", "Story", "Sound"],
     since: "2024",
@@ -37,6 +40,7 @@ export const DEVELOPERS: Developer[] = [
     name: "Hollow",
     role: "Animator · Creature motion",
     robloxUserId: 261,
+    avatarUrl: "",
     bio: "Makes the Mimic move wrong — just slightly, so you notice too late.",
     worksOn: ["Animation", "Rigging", "Creature AI"],
     since: "2024",
@@ -56,6 +60,7 @@ export const DEVELOPERS: Developer[] = [
     name: "Ward",
     role: "Map builder · Environment art",
     robloxUserId: 1,
+    avatarUrl: "",
     bio: "Built every hallway in the asylum, then broke them on purpose.",
     worksOn: ["Level design", "Lighting", "Props"],
     since: "2025",

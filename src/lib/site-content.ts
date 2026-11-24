@@ -1,4 +1,11 @@
 import logo from "@/assets/silent-logo.jpg.asset.json";
+import hallway from "@/assets/hero-hallway.jpg";
+import ward from "@/assets/location-ward.jpg";
+import entity from "@/assets/mimic-entity.jpg";
+import { DEVELOPERS, type Developer } from "@/lib/developers";
+
+export type Chapter = { number: string; label: string; title: string; image: string; released: boolean; rooms: { name: string; sub: string }[] };
+export type ExtraSection = { kicker: string; title: string; text: string; image: string; buttonLabel: string; buttonUrl: string };
 
 export type Link = { label: string; desc: string; url: string };
 
@@ -40,6 +47,11 @@ export type SiteContent = {
     stats: { key: string; value: string }[];
   };
   footer: { name: string; line: string };
+  images: { heroBackground: string; pillarImage1: string; pillarImage2: string; mimicImage: string; chaptersBackground: string; teamBackground: string };
+  team: { kicker: string; title: string; text: string };
+  developers: Developer[];
+  chapters: Chapter[];
+  sections: ExtraSection[];
 };
 
 export const DEFAULT_CONTENT: SiteContent = {
@@ -153,7 +165,17 @@ export const DEFAULT_CONTENT: SiteContent = {
     name: "THE MIMIC",
     line: "It is not trying to escape anymore. It is already here.",
   },
+  images: { heroBackground: hallway, pillarImage1: hallway, pillarImage2: ward, mimicImage: entity, chaptersBackground: ward, teamBackground: hallway },
+  team: { kicker: "Silent Interactive Studios · The team", title: "DEVELOPERS", text: "The people keeping the lights flickering." },
+  developers: DEVELOPERS,
+  chapters: [],
+  sections: [],
 };
+DEFAULT_CONTENT.chapters = [
+  { number: "I", label: "Chapter 01", title: "Asylum", image: ward, released: true, rooms: DEFAULT_CONTENT.asylum.rooms },
+  { number: "II", label: "Chapter 02", title: "Coming soon", image: hallway, released: false, rooms: [] },
+  { number: "III", label: "Chapter 03", title: "Coming soon", image: hallway, released: false, rooms: [] },
+];
 
 /** Saved content wins section by section; anything missing falls back to defaults. */
 export function mergeContent(saved: unknown): SiteContent {
