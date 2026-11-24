@@ -36,3 +36,5 @@ use the editor.
 - Opening cinematic and scroll reveals live in CinematicMotion; skip scares for reduced motion, repeat tab visits, and anchor arrivals — preserves accessible, uninterrupted navigation.
 - Creature traits use a sticky scroll-driven stack in TraitCarousel, with a static reduced-motion fallback; chapter selection lives in Chapters with animated disclosure — keeps motion tied to page progress without arrow controls.
 - CinematicMotion initializes Lenis after hydration and disables it for reduced motion; nested dialogs keep native scrolling — smooths wheel input without intercepting touch or profile scrolling.
+- All page content (text, links, pictures, developers, chapters, extra sections) lives in the `SiteContent` object, rendered by `SitePage`; `/admin` edits it with a generic editor and the same `SitePage` as live preview — keeps every visible part editable without per-field admin code.
+- Uploaded pictures go to the private `site-media` bucket and are served via `/api/public/media/*`; bundled pictures are saved as `asset:<name>` tokens — workspace blocks public buckets and bundled URLs differ per build.

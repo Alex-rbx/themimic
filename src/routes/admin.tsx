@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { SitePage } from "@/components/SitePage";
 import { Field, labelFor } from "@/components/ContentEditor";
-import { DEFAULT_CONTENT, mergeContent, type SiteContent } from "@/lib/site-content";
+import { DEFAULT_CONTENT, encodeAssets, mergeContent, type SiteContent } from "@/lib/site-content";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -119,7 +119,7 @@ function Editor() {
   async function save() {
     if (!draft) return;
     setSaving(true);
-    const { error } = await supabase.from("site_content").upsert({ id: "main", data: draft as never, updated_at: new Date().toISOString() });
+    const { error } = await supabase.from("site_content").upsert({ id: "main", data: encodeAssets(draft) as never, updated_at: new Date().toISOString() });
     setSaving(false);
     if (error) { toast.error(`Could not save: ${error.message}`); return; }
     setDirty(false);

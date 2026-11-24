@@ -177,10 +177,28 @@ DEFAULT_CONTENT.chapters = [
   { number: "III", label: "Chapter 03", title: "Coming soon", image: hallway, released: false, rooms: [] },
 ];
 
+/** Bundled pictures have build-specific URLs, so saves store a stable name instead. */
+const ASSETS: Record<string, string> = { "hero-hallway": hallway, "location-ward": ward, "mimic-entity": entity };
+function mapStrings(v: unknown, f: (s: string) => string): unknown {
+  if (typeof v === "string") return f(v);
+  if (Array.isArray(v)) return v.map((x) => mapStrings(x, f));
+  if (v && typeof v === "object") return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, mapStrings(x, f)]));
+  return v;
+}
+export function encodeAssets<T>(v: T): T {
+  return mapStrings(v, (s) => {
+    for (const [name, url] of Object.entries(ASSETS)) if (s === url || new RegExp(`assets/${name}[.-]`).test(s)) return `asset:${name}`;
+    return s;
+  }) as T;
+}
+export function decodeAssets<T>(v: T): T {
+  return mapStrings(encodeAssets(v), (s) => (s.startsWith("asset:") ? ASSETS[s.slice(6)] ?? s : s)) as T;
+}
+
 /** Saved content wins section by section; anything missing falls back to defaults. */
 export function mergeContent(saved: unknown): SiteContent {
   if (!saved || typeof saved !== "object") return DEFAULT_CONTENT;
-  const s = saved as Record<string, unknown>;
+  const s = decodeAssets(saved) as Record<string, unknown>;
   const out: Record<string, unknown> = { ...DEFAULT_CONTENT };
   for (const k of Object.keys(DEFAULT_CONTENT) as (keyof SiteContent)[]) {
     const d = DEFAULT_CONTENT[k];

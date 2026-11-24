@@ -8,7 +8,7 @@
 - [x] Turn the four creature traits into horizontal swipeable cards.
 - [x] Add three chapters; reveal Asylum rooms only on selection and blur II / III.
 - [x] Distress shared action buttons and verify chapter and carousel interactions.
-- [ ] Replace arrow navigation with a scroll-driven creature-card stack.
-- [ ] Add blood-stained unfinished chapters and animated room disclosure.
+- [x] Replace arrow navigation with a scroll-driven creature-card stack.
+- [x] Add blood-stained unfinished chapters and animated room disclosure.
 - [ ] Smooth page scrolling and enrich developer profiles with sample details and links.
-- [ ] Verify animations, profiles, and reduced-motion behavior on mobile and desktop.
+- [ ] Verify animations, profiles, and reduced-motion behavior on mobile and desktop.- [x] Admin panel at /admin to edit all content, pictures, developers, chapters and extra sections with live preview.

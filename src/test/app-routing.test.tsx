@@ -3,7 +3,7 @@ import { createRouter, rootRouteId } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
 
 import { routeTree } from "@/routeTree.gen";
-import { DEFAULT_CONTENT, mergeContent, parseContent } from "@/lib/site-content";
+import { DEFAULT_CONTENT, encodeAssets, mergeContent, parseContent } from "@/lib/site-content";
 
 // Match routes without running loaders or rendering: loaders may need a server or
 // network the test run lacks, and jsdom never loads the stylesheets React waits on.
@@ -55,5 +55,18 @@ describe("Saved site content", () => {
     expect(parseContent('{"hero":{"badge":"Patient No. 18"}}').hero.badge).toBe(
       "Patient No. 18",
     );
+  });
+});
+
+describe("Admin edits", () => {
+  it("keeps bundled pictures working after a save round-trip", () => {
+    const saved = JSON.parse(JSON.stringify(encodeAssets(DEFAULT_CONTENT)));
+    expect(saved.images.heroBackground).toBe("asset:hero-hallway");
+    expect(mergeContent(saved).images.heroBackground).toBe(DEFAULT_CONTENT.images.heroBackground);
+  });
+  it("shows a released chapter and added developers from a save", () => {
+    const merged = mergeContent({ chapters: [{ ...DEFAULT_CONTENT.chapters[1], released: true }], developers: [] });
+    expect(merged.chapters[0]?.released).toBe(true);
+    expect(merged.developers).toHaveLength(0);
   });
 });
