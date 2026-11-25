@@ -8,10 +8,11 @@ export type Chapter = { number: string; label: string; title: string; image: str
 export type ExtraSection = { kicker: string; title: string; text: string; image: string; buttonLabel: string; buttonUrl: string };
 
 export type Link = { label: string; desc: string; url: string };
+export type NavItem = { label: string; href: string; children?: { label: string; href: string }[] };
 
 export type SiteContent = {
   brand: { name: string; studio: string; logo: string; footerText: string; copyright: string };
-  nav: { label: string; href: string }[];
+  nav: NavItem[];
   socials: { label: string; url: string }[];
   hero: {
     badge: string;
@@ -64,10 +65,19 @@ export const DEFAULT_CONTENT: SiteContent = {
   },
   nav: [
     { label: "Home", href: "#top" },
-    { label: "The Mimic", href: "#mimic" },
-    { label: "Developers", href: "#team" },
-    { label: "The Asylum", href: "#asylum" },
-    { label: "Status", href: "#dev" },
+    { label: "Content Creator Portal", href: "#" },
+    { label: "Roadmap", href: "#dev" },
+    { label: "Development & Staff Team", href: "#team" },
+    {
+      label: "Support Us",
+      href: "#",
+      children: [
+        { label: "Discord", href: "https://discord.com/invite/ezgg" },
+        { label: "Donated Packages", href: "#" },
+        { label: "Avatar Links", href: "#" },
+        { label: "Contact Us", href: "#" },
+      ],
+    },
   ],
   socials: [
     { label: "Discord", url: "https://discord.com/invite/ezgg" },

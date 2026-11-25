@@ -313,7 +313,7 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: clip; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-.chapter-card { position: relative; display: block; width: 100%; height: 300px; padding: 0; overflow: hidden; white-space: normal; text-align: left; }
+.chapter-card { position: relative; display: block; width: 100%; height: 300px; padding: 0; overflow: hidden; white-space: normal; text-align: left; outline: 1px solid var(--bone); outline-offset: 6px; }
 .chapter-card { transition: background .7s, border-color .7s, box-shadow .7s, transform .7s var(--motion-ease); }
 .chapter-card[data-state=open] { border-color: var(--blood); box-shadow: var(--scar-glow); }
 .chapter-image { position: absolute; inset: 0; height: 100%; width: 100%; object-fit: cover; opacity: .4; filter: grayscale(1); mask-image: var(--chapter-shade); transition: scale 1.2s var(--motion-ease), opacity .8s; }

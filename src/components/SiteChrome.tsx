@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { SiteContent } from "@/lib/site-content";
 
@@ -50,8 +50,27 @@ export function SocialLinks({ c, className = "" }: { c: SiteContent; className?:
 
 function NavLink({ href, children, className, onClick }: { href: string; children: React.ReactNode; className: string; onClick?: () => void }) {
   if (href === "/developers") href = "#team";
+  if (href === "#" || href === "") return <a href="#" className={className} onClick={onClick}>{children}</a>;
   if (href.startsWith("#")) return <Link to="/" hash={href.slice(1)} className={className} onClick={onClick}>{children}</Link>;
   return <a href={href} className={className} onClick={onClick}>{children}</a>;
+}
+
+const navClass = "font-cond text-lg font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:text-bone";
+
+function NavItemDesktop({ n }: { n: SiteContent["nav"][number] }) {
+  if (!n.children?.length) return <NavLink href={n.href} className={navClass}>{n.label}</NavLink>;
+  return (
+    <div className="group relative">
+      <NavLink href={n.href} className={`${navClass} flex items-center gap-1.5`}>{n.label}<ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" aria-hidden="true" /></NavLink>
+      <div className="invisible absolute left-1/2 top-full z-30 w-56 -translate-x-1/2 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+        <div className="glass-panel flex flex-col gap-1 p-2">
+          {n.children.map((ch) => (
+            <NavLink key={ch.label} href={ch.href} className="rounded-sm px-3 py-2 font-cond text-base font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:bg-bone/5 hover:text-bone">{ch.label}</NavLink>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function SiteHeader({ c }: { c: SiteContent }) {
@@ -62,9 +81,7 @@ export function SiteHeader({ c }: { c: SiteContent }) {
       <header className="relative z-20 mx-auto grid grid-cols-[minmax(0,1fr)_auto] max-w-[1400px] items-center gap-4 px-6 py-5 sm:flex sm:justify-between md:px-12">
         <Link to="/" className="min-w-0 truncate font-display text-3xl text-bone">{c.brand.name}</Link>
         <nav className="hidden gap-7 lg:flex">
-          {c.nav.map((n) => (
-            <NavLink key={n.href} href={n.href} className="font-cond text-lg font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:text-bone">{n.label}</NavLink>
-          ))}
+          {c.nav.map((n) => <NavItemDesktop key={n.label} n={n} />)}
         </nav>
         <div className="hidden items-center gap-4 lg:flex"><SocialLinks c={{ ...c, socials: c.socials.filter((s) => s.label !== "Discord") }} /><DiscordButton url={discord} label="Join" /></div>
         <Button variant="glass" size="icon" aria-label={open ? "Close menu" : "Menu"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)} className="h-11 w-11 shrink-0 lg:hidden">
@@ -73,7 +90,14 @@ export function SiteHeader({ c }: { c: SiteContent }) {
       </header>
       {open && (
         <nav id="mobile-navigation" className="relative z-20 flex flex-col gap-3 border-y border-border bg-ash/90 px-6 py-5 backdrop-blur-xl lg:hidden">
-          {c.nav.map((n) => <NavLink key={n.href} href={n.href} onClick={() => setOpen(false)} className="font-cond text-lg uppercase text-bone">{n.label}</NavLink>)}
+          {c.nav.map((n) => (
+            <div key={n.label} className="flex flex-col gap-2">
+              <NavLink href={n.href} onClick={() => setOpen(false)} className="font-cond text-lg uppercase text-bone">{n.label}</NavLink>
+              {n.children?.map((ch) => (
+                <NavLink key={ch.label} href={ch.href} onClick={() => setOpen(false)} className="pl-4 font-cond text-base uppercase text-muted-foreground">{ch.label}</NavLink>
+              ))}
+            </div>
+          ))}
           <div className="flex flex-wrap items-center gap-4 pt-2"><DiscordButton url={discord} label="Join the Discord" /><SocialLinks c={c} /></div>
         </nav>
       )}
