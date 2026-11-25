@@ -386,3 +386,12 @@ html.lenis, html.lenis body { height: auto; }
   .mimic-intro { position: static; }
   .room-card { translate: none; }
 }
+
+/* Hide the injected "Edit with Lovable" badge everywhere it appears. */
+#lovable-badge,
+[id="lovable-badge"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
